@@ -1,7 +1,10 @@
 A responsive web-based system for managing human resource
 information including leave and attendance tracking.
 
-with CodeIgnighter PHP Framework, Bootstrap, Jquery, AJAX, Geo-Location API
+with CodeIgnighter PHP Framework, Bootstrap, Jquery, AJAX, Geo-Location API(attendance*pending) 
+
+Video Demo :
+https://www.youtube.com/watch?v=d1-143MBVaw&t=3s
 
 Screenshots :
 ![4](https://user-images.githubusercontent.com/29349064/58450459-bfee7580-8130-11e9-8429-0986618e09fd.jpg)

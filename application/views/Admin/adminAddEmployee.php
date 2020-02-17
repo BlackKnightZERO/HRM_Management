@@ -5,6 +5,7 @@
 	    		<ol class="breadcrumb">
 	    			<li class="breadcrumb-item breadcrumb-item active"><a href="#">Dashboard</a></li>
 	    			    <li class="breadcrumb-item">Library</li>
+	    			    <li class="breadcrumb-item">Add Employee</li>
 	    		</ol>
 	    	</div>
 	    </section>
@@ -26,11 +27,11 @@
 	    				  ['class'=>'list-group-item list-group-item-action active main-color-bg']); ?>
 
 	    				  <?php echo anchor('AdminController/adminLeaveRequest', 
-	    				  '<span><i class="fas fa-coffee"></i></span> Leave Requests <span class="badge badge-secondary float-right m-1">12</span>', 
+	    				  '<span><i class="fas fa-coffee"></i></span> Leave Requests <span class="badge badge-secondary float-right m-1">'.$leaveReqPendingCountBadge.'</span>', 
 	    				  ['class'=>'list-group-item list-group-item-action']); ?>
 
 	    				  <?php echo anchor('AdminController/adminEmployeeList', 
-	    				  '<span><i class="fas fa-list-alt"></i></span> Employee List <span class="badge badge-secondary float-right m-1">70</span>', 
+	    				  '<span><i class="fas fa-list-alt"></i></span> Employee List <span class="badge badge-secondary float-right m-1">'.$employeeCountBadge.'</span>', 
 	    				  ['class'=>'list-group-item list-group-item-action']); ?>
 
 	    				  <?php echo anchor('AdminController/adminAddDepartmentDesignation', 
@@ -41,7 +42,7 @@
 	    			<div class="col-md-9">
 	    				<div class="card">
 	    				  
-	    				    <h5 class="card-header main-color-bg">Add New Employee</h5>
+	    				    <h5 class="card-header main-color-bg"><i class="fas fa-plus"></i> Add New Employee</h5>
 
 	    				    <div class="card-body">
 	    				    <?php echo form_open('AdminController/addEmployee'); ?> 

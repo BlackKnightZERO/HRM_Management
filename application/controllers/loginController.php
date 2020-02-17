@@ -74,9 +74,19 @@ public function userLogin()
 		{
 			$this->session->unset_userdata('sessionid');
 			$this->session->unset_userdata('sessionname');
+
+			$this->session->unset_userdata('headsessionid');
+			$this->session->unset_userdata('headsessionname');
+			$this->session->unset_userdata('headsessiondeptid');
+
 			$this->session->sess_destroy('sessionid');
 			$this->session->sess_destroy('sessionidname');
-			redirect('/UserController/index/'); /* return redirect('/UserController/userLogin/');  */
+
+			$this->session->sess_destroy('headsessionid');
+			$this->session->sess_destroy('headsessionname');
+			$this->session->sess_destroy('headsessiondeptid');
+
+			return redirect('/UserController/index/'); /* return redirect('/UserController/userLogin/');  */
 		}
 
 		public function adminLogout()
@@ -85,7 +95,7 @@ public function userLogin()
 			$this->session->unset_userdata('adminsessionname');
 			$this->session->sess_destroy('adminsessionid');
 			$this->session->sess_destroy('adminsessionname');
-			redirect('/UserController/index/');
+			return redirect('/UserController/index/');
 		}
 
 

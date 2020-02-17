@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 24, 2019 at 07:01 PM
+-- Generation Time: Jun 24, 2019 at 07:23 AM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -123,14 +123,14 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`id`, `RFID`, `name`, `department_id`, `designation_id`, `join_date`, `date_of_birth`, `blood_group`, `official_mobile_no`, `personal_mobile_no`, `official_email_1`, `official_email_2`, `password`, `employee_role`, `profile_pic_path`, `dept_head`) VALUES
-(1, '', 'Arif Faysal', 5, 11, '2019-04-03', '1994-03-17', 'B+', '01670239024', '01670239024', 'ayon.arif.10@gmail.com', '', '$2y$10$IF.cSbPB/tb.dwMBJv1yyuXsYScpnKRNgKp7Z8szfWemFMULxF0tC', 1, 'http://[::1]/CI_HRM/ProfilePicture/10897960_10205124039852336_5591500229351470726_n.jpg', 0),
-(3, '', 'partha', 5, 25, '2019-04-09', '2019-04-22', 'o+', '0173345437', '', 'partha@gmail.com', '', '$2y$10$aa7YzOxmLmsO33u0ta58fe0l1T6xyfTv2hs4TzmDWHFohY.TCnvUW', 0, 'http://[::1]/CI_HRM/ProfilePicture/29258472_10214332586300242_720523085629457968_n1.jpg', 0),
-(6, '', 'Shams Ahmed', 6, 31, '2018-09-14', '2019-06-20', 'A+', '723894234', '', 'sams@gmail.com', '', '$2y$10$6Stcy4.CqGL7LNzVpFuP8.UB3tKAmwWB0A.qexp5YjoZsOdSIfYjm', 1, 'http://[::1]/CI_HRM/ProfilePicture/cool-anime-girl-profile-pictures-71.jpg', 0),
-(7, '', 'Rafi Ahmed', 2, 9, '2018-05-10', '2019-06-10', '', '17238771298', '', 'rafi@gmail.com', '', '$2y$10$2CqlyPeE.xxqv.zp6SsRbu/qvCgX/biY62ohOqZOwsOJ8kl9PkuYu', 0, 'http://[::1]/CI_HRM/ProfilePicture/images.jpg', 0),
+(1, '', 'Arif Faysal', 5, 11, '2019-04-03', '1994-03-17', 'B+', '01670239024', '01670239024', 'ayon.arif.10@gmail.com', '', '$2y$10$IF.cSbPB/tb.dwMBJv1yyuXsYScpnKRNgKp7Z8szfWemFMULxF0tC', 1, 'http://192.168.88.83/CI_HRM/ProfilePicture/10897960_10205124039852336_5591500229351470726_n.jpg', 0),
+(3, '', 'partha', 5, 25, '2019-04-09', '2019-04-22', 'o+', '0173345437', '', 'partha@gmail.com', '', '$2y$10$5vdAhrexQc4.mS4dW3MZMOjp17ExbxY.Ryvkf1DC72y2EZDq0IuQS', 0, 'http://192.168.88.83/CI_HRM/ProfilePicture/29258472_10214332586300242_720523085629457968_n1.jpg', 0),
+(6, '', 'Shams Ahmed', 6, 31, '2018-09-14', '2019-06-20', 'A+', '723894234', '', 'sams@gmail.com', '', '$2y$10$6Stcy4.CqGL7LNzVpFuP8.UB3tKAmwWB0A.qexp5YjoZsOdSIfYjm', 1, 'http://192.168.88.83/CI_HRM/ProfilePicture/cool-anime-girl-profile-pictures-71.jpg', 0),
+(7, '', 'Rafi Ahmed', 2, 9, '2018-05-10', '2019-06-10', '', '17238771298', '', 'rafi@gmail.com', '', '$2y$10$2CqlyPeE.xxqv.zp6SsRbu/qvCgX/biY62ohOqZOwsOJ8kl9PkuYu', 0, 'http://192.168.88.83/CI_HRM/ProfilePicture/images.jpg', 0),
 (9, '', 'Akib Zaman', 5, 11, '2019-05-09', '2019-06-10', 'B+', '01672323232', '01813456567', 'akib@gmail.com', 'akib2@gmail.com', '$2y$10$F9E9YAT0kimU86K1vJE/Zu9NQAk4gJ7x15HtY/OMJ0Ci3bmYQPkoC', 0, 'http://[::1]/CI_HRM/ProfilePicture/character1.gif', 0),
-(12, '', 'sabu babu', 5, 6, '2019-05-01', '2019-05-04', 'B+', '0191678432', '65345184000', 'sabu@gmail.com', 'ssrhfkj@gmail.com', '$2y$10$nq4t8yvmWA/stHlvzbUnYuSadx/VytqXO5KAO.CdfakavuiWME0H2', 0, 'http://[::1]/CI_HRM/ProfilePicture/FB_IMG_1558345960467.jpg', 0),
-(13, '', 'moon', 5, 3, '2019-03-21', '2019-06-20', 'B+', '01733237878', '18927391', 'moon@gmail.com', '', '$2y$10$6.kuGJRR9..ucwi/L90dp.q51CEscNPxsx4nfdfC7cQbZWH01GRX2', 0, 'http://[::1]/CI_HRM/ProfilePicture/dc6rlq7-70ae3ef4-0c5c-468d-bf6c-1eb4becf62ae1.gif', 1),
-(14, '', 'rifat mabin', 1, 3, '2019-05-02', '2019-06-10', '', '0181343434', '', 'rifat@gmail.com', '', '$2y$10$M6IgUhEUA7bMcBdVPgDQjeacuPNJZsgUJiJj7pBhCWyHpEeRJWJii', 0, 'http://[::1]/CI_HRM/ProfilePicture/QueenDaenerysTargaryenIronThrone_PNG.png', 1),
+(12, '', 'sabu babu', 5, 6, '2019-05-01', '2019-05-04', 'B+', '0191678432', '65345184000', 'sabu@gmail.com', 'ssrhfkj@gmail.com', '$2y$10$nq4t8yvmWA/stHlvzbUnYuSadx/VytqXO5KAO.CdfakavuiWME0H2', 0, 'http://192.168.88.83/CI_HRM/ProfilePicture/FB_IMG_1558345960467.jpg', 0),
+(13, '', 'moon', 5, 3, '2019-03-21', '2019-06-20', 'B+', '01733237878', '18927391', 'moon@gmail.com', '', '$2y$10$6.kuGJRR9..ucwi/L90dp.q51CEscNPxsx4nfdfC7cQbZWH01GRX2', 0, 'http://192.168.88.83/CI_HRM/ProfilePicture/dc6rlq7-70ae3ef4-0c5c-468d-bf6c-1eb4becf62ae1.gif', 1),
+(14, '', 'rifat mabin', 1, 3, '2019-05-02', '2019-06-10', '', '0181343434', '', 'rifat@gmail.com', '', '$2y$10$M6IgUhEUA7bMcBdVPgDQjeacuPNJZsgUJiJj7pBhCWyHpEeRJWJii', 0, 'http://192.168.88.83/CI_HRM/ProfilePicture/QueenDaenerysTargaryenIronThrone_PNG.png', 1),
 (15, '', 'Nusrat Jahan Mimmy', 1, 11, '2019-06-02', '2019-06-13', 'A+', '0168505050', '', 'mimmy@gmail.com', '', '$2y$10$gscFlL054BtSPAR7MnkMqOug2UMvL1yC/G7YS9L/xYQ6EIvRTR3Cq', 0, 'http://[::1]/CI_HRM/ProfilePicture/unnamed.png', 0);
 
 -- --------------------------------------------------------
@@ -181,8 +181,7 @@ INSERT INTO `leaves` (`id`, `employee_id`, `leave_type`, `leave_start`, `leave_e
 (27, 3, 'Sick Leave', '2019-06-12', '2019-06-14', 'fever', 2, 0, '', '', '2019-06-12', '2019-06-12'),
 (28, 12, 'Annual Leave', '2019-06-13', '2019-06-17', 'Want to take the full annual leave', 1, 0, '', '', '2019-06-13', '2019-06-13'),
 (29, 3, 'Sick Leave', '2019-06-15', '2019-06-17', 'no rsn', 0, 0, '', '', '2019-06-15', '2019-06-17'),
-(30, 9, 'Sick Leave', '2019-06-22', '2019-06-25', 'Tooth Extraction', 1, 0, '', '', '2019-06-22', '2019-06-22'),
-(31, 15, 'Sick Leave', '2019-08-26', '2019-08-29', 'Sickness', 2, 0, '', '', '2019-08-26', '2019-08-26');
+(30, 9, 'Sick Leave', '2019-06-22', '2019-06-25', 'Tooth Extraction', 1, 0, '', '', '2019-06-22', '2019-06-22');
 
 -- --------------------------------------------------------
 
@@ -215,7 +214,7 @@ INSERT INTO `notice` (`id`, `notice_title`, `notice_post_date`, `notice_submitte
 (9, 'Ramadan Office Time', '2019-05-12', 1, 'Ramdan Office hour for Saka as follows :\r\nOffice Start -> 09:00AM\r\nOffice End -> 04:00PM', ',9,11,12,13'),
 (10, 'Employee Salary Date', '2019-05-12', 1, 'Employees are requested to collect there salary from Accounts from 28th-30th of current month.', ',4,7,3,9,11,12,14,15,13'),
 (11, 'Microsoft Outlook Error', '2019-05-13', 6, 'Its to be noted many employees are facing problems in MS Outlook outgoing email errors. Do this simple change in setting -> \r\nOpen the Account Settings dialog; ...\r\nSelect the Data Files tab.\r\nSelect the mailbox for which you want to reset the cache. ...\r', ',4,9,10,11,3,13'),
-(12, 'Scanning Technique', '2019-05-13', 1, 'The entrance laptop has the main scanner. \r\nSteps :\r\n1. Put the page inside scanner \r\n2. Open the laptop beside the scanner \r\n3. On Desktop Open Adobe Acrobat 5.0 \r\n4. From top bar go to File->import->scan\r\n5. Wait for completing scan\r\n6. From top bar go ', ',7,11,9,12,14,13,15'),
+(12, 'Scanning Technique', '2019-05-13', 1, 'The entrance laptop has the main scanner. \r\nSteps :\r\n1. Put the page inside scanner \r\n2. Open the laptop beside the scanner \r\n3. On Desktop Open Adobe Acrobat 5.0 \r\n4. From top bar go to File->import->scan\r\n5. Wait for completing scan\r\n6. From top bar go ', ',7,11,9,12,14,13'),
 (13, 'Sales & Service team(updated)', '2019-05-20', 6, 'Its is to notify the sales & service employees to inform specifically their gps attendance & site image upload to be done correctly everyday.', ',9,11,13');
 
 --
@@ -282,7 +281,7 @@ ALTER TABLE `employee`
 -- AUTO_INCREMENT for table `leaves`
 --
 ALTER TABLE `leaves`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `notice`

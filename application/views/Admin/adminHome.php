@@ -29,11 +29,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	    				  ['class'=>'list-group-item list-group-item-action']); ?>
 
 	    				  <?php echo anchor('AdminController/adminLeaveRequest', 
-	    				  '<span><i class="fas fa-coffee"></i></span> Leave Requests <span class="badge badge-secondary float-right m-1">12</span>', 
+	    				  '<span><i class="fas fa-coffee"></i></span> Leave Requests <span class="badge badge-secondary float-right m-1">'.$leaveReqPendingCountBadge.'</span>', 
 	    				  ['class'=>'list-group-item list-group-item-action']); ?>
 
 	    				  <?php echo anchor('AdminController/adminEmployeeList', 
-	    				  '<span><i class="fas fa-list-alt"></i></span> Employee List <span class="badge badge-secondary float-right m-1">70</span>', 
+	    				  '<span><i class="fas fa-list-alt"></i></span> Employee List <span class="badge badge-secondary float-right m-1">'.$employeeCountBadge.'</span>', 
 	    				  ['class'=>'list-group-item list-group-item-action']); ?>
 
 	    				  <?php echo anchor('AdminController/adminAddDepartmentDesignation', 
@@ -85,23 +85,171 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	    				    	<div class="row" style="text-align: center;">
 	    				    		<div class="col-lg-3 col-md-3 col-sm-12 col-12">
 	    				    			<div class="card card-body bg-light" style="height: 150px;">
-											<a href="#" style="text-decoration: none; color: #333333; margin-top: 8px;">
-	    				    			     <h2><span><i class="fas fa-birthday-cake"></i></i></span>1</h2>
+
+	    				    			<?php	
+	    				    			$today = date('m-d'); 
+	    				    			$countBirthday = 0;
+	    				    			foreach ($birthdayTodaydata as $key => $value) {
+	    				    				$rest = substr($value->employee_bd, -5);
+	    				    				if($rest == $today)
+	    				    				{
+	    				    					$countBirthday++;	
+	    				    				}
+	    				    			}
+	    				    			?>
+
+											<a href="" data-toggle="modal" data-target="#birthdayModal" style="text-decoration: none; color: #333333; margin-top: 8px;">
+	    				    			     <h2><span><i class="fas fa-birthday-cake"></i></i></span><?php echo $countBirthday;?></h2>
 	    				    			     <h5>Birthdays</a></h5>
-	    				    			</div>
+	    				    			     </div>
 	    				    		</div>
+
+	    					 <!--MODAL -->
+							 <div class="modal fade" id="birthdayModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel6" aria-hidden="true">
+							   <div class="modal-dialog" role="document">
+							     <div class="modal-content">
+							       <div class="modal-header">
+							         <h5 class="modal-title" id="exampleModalLabel6" style="color: #6d7da5;">Today's Birthday <span><i class="fas fa-birthday-cake"></i></span></h5>
+							         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							           <span aria-hidden="true">&times;</span>
+							         </button>
+							       </div>
+							       <div class="modal-body">
+							         <!-- Media  -->
+							         
+							         <?php 
+							         $today = date('m-d'); 
+							         foreach ($birthdayTodaydata as $key2 => $value2) 
+							         {
+    				    				$rest = substr($value2->employee_bd, -5);
+    				    				if($rest == $today)
+    				    				{
+    				    					$q = $this->db->select('employee.name as en,
+    				    						department.department_name as employee_dept,
+												designation.designation_name as employee_desg, 
+												employee.profile_pic_path as employee_profile_pic
+    				    						')
+    				    					->from('employee')
+											->join('department','employee.department_id=department.id')
+											->join('designation', 'employee.designation_id = designation.id')
+											->where('employee.id', $value2->employee_id)
+											->get();  
+											$row2 = $q->row();
+
+											if(isset($row2))
+											{ 
+											?>
+									        	 <div class="media">
+									           <img class="mr-3" src="<?php echo $row2->employee_profile_pic; ?>" alt="" style="height: 80px; width: 80px;">
+
+									           <div class="media-body">
+									             <h5 class="mt-0" style="text-align: left;"><?php echo $row2->en; ?> <span class="float-right"><i class="fas fa-gift" style="color: #6d7da5;"></i></span></h5>
+									            
+									             <h6 class="mt-0" style="text-align: left;"><?php echo $row2->employee_desg; ?></h6>
+									              <h6 class="mt-0" style="text-align: left;"><?php echo $row2->employee_dept; ?></h6>
+									           </div>
+									           </div>
+									           <hr>
+							            <?php 
+							       			 } } }
+							       		 ?>
+
+							         <!-- Media -->
+							       </div>
+							       <div class="modal-footer">
+							         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							       </div>
+							     </div>
+							   </div>
+							 </div>
+							 <!--MODAL -->
+
 	    				    		<div class="col-lg-3 col-md-3 col-sm-12 col-12">
 	    				    			<div class="card card-body bg-light" style="height: 150px;">
-	    				    				<a href="#" style="text-decoration: none; color: #333333; margin-top: 8px;">
-	    				    			     <h2><span><i class="fas fa-bell"></i></span>5</h2>
+	    				    				
+	    				    				<?php 
+	    				    				$countLeaveData=0;
+	    				    				foreach ($onLeaveTodaydata as $key => $value) 
+	    				    				{
+	    				    					$countLeaveData++;
+
+	    				    				}
+
+	    				    				?>
+
+
+	    				    				<a href="" data-toggle="modal" data-target="#leaveModal" style="text-decoration: none; color: #333333; margin-top: 8px;">
+	    				    			     <h2><span><i class="fas fa-bell"></i></span><?php echo $countLeaveData; ?></h2>
 	    				    			     <h5>On Leave Today</a> </h5>
 	    				    			</div>
 	    				    		</div>
+
+
+	    				    		 <!--MODAL -->
+							 <div class="modal fade" id="leaveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel7" aria-hidden="true">
+							   <div class="modal-dialog" role="document">
+							     <div class="modal-content">
+							       <div class="modal-header">
+							         <h5 class="modal-title" id="exampleModalLabel7" style="color: #6d7da5;">On Leave Today <span><i class="fas fa-sign-out-alt"></i></span></h5>
+							         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							           <span aria-hidden="true">&times;</span>
+							         </button>
+							       </div>
+							       <div class="modal-body">
+							         <!-- Media  -->
+							         	
+							         	<?php 
+
+							         	foreach ($onLeaveTodaydata as $key5 => $value5) 
+							         	{
+
+							         		$q5 = $this->db->select('employee.name as en5,
+    				    						department.department_name as employee_dept5,
+												designation.designation_name as employee_desg5, 
+												employee.profile_pic_path as employee_profile_pic5
+    				    						')
+    				    					->from('employee')
+											->join('department','employee.department_id=department.id')
+											->join('designation', 'employee.designation_id = designation.id')
+											->where('employee.id', $onLeaveTodaydata[$key5])
+											->get();  
+
+
+											?>
+
+											 <div class="media">
+									           <img class="mr-3" src="<?php echo $q5->row()->employee_profile_pic5; ?>" alt="" style="height: 80px; width: 80px;">
+
+									           <div class="media-body">
+									             <h5 class="mt-0" style="text-align: left;"><?php echo $q5->row()->en5; ?> <span class="float-right"><i class="fas fa-door-open"></i></span></h5>
+									            
+									             <h6 class="mt-0" style="text-align: left;"><?php echo $q5->row()->employee_desg5; ?></h6>
+									              <h6 class="mt-0" style="text-align: left;"><?php echo $q5->row()->employee_dept5; ?></h6>
+									           </div>
+									           </div>
+									           <hr>
+
+											<?php } ?>
+
+							         			
+							        
+							         <!-- Media -->
+							       </div>
+							       <div class="modal-footer">
+							         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							       </div>
+							     </div>
+							   </div>
+							 </div>
+							 <!--MODAL -->
+
+
+
 	    				    		<div class="col-lg-3 col-md-3 col-sm-12 col-12">
 	    				    			<div class="card card-body bg-light" style="height: 150px;">
 												<a href="#" style="text-decoration: none; color: #333333; margin-top: 8px;">
-	    				    			     <h2><span><i class="fas fa-chart-pie"></i></span>7</h2>
-	    				    			     <h5>Total Leaves</a></h5>
+	    				    			     <h2><span><i class="fas fa-chart-line"></i></span>12</h2>
+	    				    			     <h5>Attendance</a></h5>
 	    				    			</div>
 	    				    		</div>
 	    				    		<div class="col-lg-3 col-md-3 col-sm-12 col-12">
@@ -151,7 +299,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	    				  <tbody>
 
 
-	    				  	<?php if (count($noticetabledata)): ?>
+	    				  	<?php 
+	    				  	$count=0;
+	    				  	if (count($noticetabledata)): ?>
 	    				  	<?php foreach ($noticetabledata as $key => $data ): ?>
 	    				    <tr>
 	    				      <th scope="row"><?php echo $key+1; ?></th>
@@ -160,7 +310,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	    				      <td><?php echo $data->nd; ?></td>
 	    				      <td><?php echo $data->npd; ?></td>
 	    				      <td>
-	    				      	<span onclick="postEdit(<?php echo $data->nid;?>)" data-toggle="modal" data-target="#<?php echo $data->nid; ?>" data-whatever="@getbootstrap"><i class="fas fa-edit"></i></span> &nbsp;
+	    				      	<span onclick="postEdit(<?php echo $data->nid;?>)" data-toggle="modal" data-target="#<?php echo $data->nid; ?>" data-whatever="@getbootstrap"><i class="fas fa-edit" style="color: #272657;"></i></span> &nbsp;
 	    				      	<!-- modal -->
 	    				      	<div class="modal fade" id="<?php echo $data->nid; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	    				      	  <div class="modal-dialog" role="document">
@@ -195,7 +345,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	    				      	<!-- modal -->
 
 
-	    				      	<span onclick="postDelete(<?php echo $data->nid;?>)"><i class="fas fa-trash-alt"></i></span>
+	    				      	<span onclick="postDelete(<?php echo $data->nid;?>)"><i class="fas fa-trash-alt" style="color: #61282C;"></i></span>
 							  </td>
 							  <td>
 							  	<?php
@@ -203,10 +353,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							  	$explode =	explode(',',$data->nli);
 
 							  	?>
-							  	<span data-toggle="modal" data-target="#<?php echo $key; ?>"><i class="fas fa-eye"></i></span>
+							  	<span data-toggle="modal" data-target="#Likes<?php echo $count; ?>"><i class="fas fa-eye" style="color: #245222;"></i></span>
 							  </td>
 							 <!--MODAL -->
-							 <div class="modal fade" id="<?php echo $key; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							 <div class="modal fade" id="Likes<?php echo $count; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							   <div class="modal-dialog" role="document">
 							     <div class="modal-content">
 							       <div class="modal-header">
@@ -232,13 +382,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							           <img class="mr-3" src="<?php echo $row->profile_pic_path; ?>" alt="" style="height: 50px; width: 50px;">
 
 							           <div class="media-body">
-							             <h6 class="mt-0"><?php echo $row->name; ?></h6>
+							             <h6 class="mt-0"><?php echo $row->name; ?><span class="float-right"><i class='far fa-thumbs-up'></i></span></h6>
 							           </div>
 							           </div>
 							           <hr>
-							            <?php }} ?>
-							    
-							         
+							            <?php 
+							           $count++; 
+							        	}} 
+							        	?>
 							         <!-- Media -->
 							       </div>
 							       <div class="modal-footer">

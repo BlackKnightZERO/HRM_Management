@@ -6,6 +6,7 @@
 	    		<ol class="breadcrumb">
 	    			<li class="breadcrumb-item breadcrumb-item active"><a href="#">Dashboard</a></li>
 	    			    <li class="breadcrumb-item">Library</li>
+	    			   
 	    		</ol>
 	    	</div>
 	    </section>
@@ -27,11 +28,11 @@
 	    				  ['class'=>'list-group-item list-group-item-action']); ?>
 
 	    				  <?php echo anchor('AdminController/adminLeaveRequest', 
-	    				  '<span><i class="fas fa-coffee"></i></span> Leave Requests <span class="badge badge-secondary float-right m-1">12</span>', 
+	    				  '<span><i class="fas fa-coffee"></i></span> Leave Requests <span class="badge badge-secondary float-right m-1">'.$leaveReqPendingCountBadge.'</span>', 
 	    				  ['class'=>'list-group-item list-group-item-action']); ?>
 
 	    				  <?php echo anchor('AdminController/adminEmployeeList', 
-	    				  '<span><i class="fas fa-list-alt"></i></span> Employee List <span class="badge badge-secondary float-right m-1">70</span>', 
+	    				  '<span><i class="fas fa-list-alt"></i></span> Employee List <span class="badge badge-secondary float-right m-1">'.$employeeCountBadge.'</span>', 
 	    				  ['class'=>'list-group-item list-group-item-action']); ?>
 
 	    				  <?php echo anchor('AdminController/adminAddDepartmentDesignation', 

@@ -4,6 +4,7 @@
 	    		<ol class="breadcrumb">
 	    			<li class="breadcrumb-item breadcrumb-item active"><a href="#">Home</a></li>
 	    			    <li class="breadcrumb-item">Library</li>
+	    			    <li class="breadcrumb-item">Approve Leave Requests</li>
 	    		</ol>
 	    	</div>
 	    </section>
@@ -25,24 +26,10 @@
 
 	    				    <?php if($this->session->userdata('headsessionid'))
 	    				    { 
-	    				    	$s = $this->session->userdata('headsessiondeptid');
-	    				    	$array = array('employee.department_id' => $s, 'leaves.current_status_from_dept_head' => 0, 'employee.employee_role' => 0);
-
-	    				    	$query = $this->db->SELECT('leaves.id as l_id')
-	    				    						->from('leaves')
-	    				    						->join('employee', 'leaves.employee_id = employee.id')
-	    				    						->join('department','employee.department_id=department.id')
-	    				    						->where($array)
-	    				    						->order_by('l_id','DESC')
-	    				    						->get();			
-	    				    		if($query)
-	    				    		{
-	    				    			$var = $query->num_rows();
-	    				    		}
 	    				    ?>	
 
 	    					<?php echo anchor('UserController/headApproveLeave', 
-	    				  '<span><i class="fas fa-clipboard-check"></i></span> Approve Leave  <span class="badge badge-secondary float-right m-1">'.$var.'</span>', 
+	    				  '<span><i class="fas fa-clipboard-check"></i></span> Approve Leave  <span class="badge badge-secondary float-right m-1">'.$leaveReqPendingCountBadge.'</span>', 
 	    				  ['class'=>'list-group-item list-group-item-action active main-color-bg']); ?>
 
 	    					<?php
@@ -55,7 +42,7 @@
 
 
 	    				  <?php echo anchor('UserController/employeeViewEmployeeList', 
-	    				  '<span><i class="fas fa-list-alt"></i></span> Employee List <span class="badge badge-secondary float-right m-1">70</span>', 
+	    				  '<span><i class="fas fa-list-alt"></i></span> Employee List <span class="badge badge-secondary float-right m-1">'.$employeeCountBadge.'</span>', 
 	    				  ['class'=>'list-group-item list-group-item-action']); ?>
 
 	    				</div>
@@ -108,6 +95,7 @@
     	    				  <thead style="text-align: center;">
     	    				    <tr>
     	    				      <th scope="col">#</th>
+    	    				      <th scope="col">-</th>
     	    				      <th scope="col" style="min-width: 150px;">Name</th>
     	    				      <th scope="col" style="min-width: 120px;">Department</th>
     	    				      <th scope="col" style="min-width: 120px;">Designation</th>
@@ -125,7 +113,7 @@
     	    				      <th scope="col" style="min-width: 150px;">Email</th>
     	    				      <th scope="col">Sick Leave Requested</th>
     	    				      <th scope="col">Annual Leave Requested</th>
-    	    				      <th scope="col">Compensatory Leave Requested</th>
+    	    				      <th scope="col">Comp. Leave Requested</th>
     	    				    </tr>
     	    				  </thead>
     	    				  <tbody>
@@ -135,8 +123,11 @@
 		    			    				{ ?>
 
 		    			    					
-		    			    			<tr> 
+		    			    			<tr style="height: 70px;"> 
 		    			    					<td> <?PHP echo $key+1; ?> </td>
+		    			    					<td style="text-align: center;">
+				    	    				  		<img src='<?php echo $data->employee_profile_pic; ?>' class="rounded-circle" alt="pic" style="width: 50px; height: 50px;">
+				    	    				  	</td>
 		    			    					<td><?PHP echo $data->employee_name; ?></td>
 		    				    				<td>
 		    				    					<?PHP echo $data->employee_dept; ?>
@@ -150,8 +141,8 @@
 		    				    				<td><?PHP echo $data->employee_desg; ?></td>
 
 		    				    				<td><?PHP echo $data->employee_leave_type; ?></td>
-		    				    				<td><?PHP echo $data->employee_leave_start; ?></td>
-		    				    				<td><?PHP echo $data->employee_leave_end; ?></td>
+		    				    				<td><?PHP if($data->employee_leave_start=='0000-00-00'){echo '';}else echo $data->employee_leave_start; ?></td>
+		    				    				<td><?PHP if($data->employee_leave_end=='0000-00-00'){echo '';}else echo $data->employee_leave_end; ?></td>
 		    				    				<td><?PHP echo $data->employee_leave_reason; ?></td>
 		    				    				<td>
 		    										
@@ -160,7 +151,7 @@
 		    								         
 		    										
 		    									</td>
-		    				    				<td><?PHP echo $data->employee_leave_requested_on; ?></td>
+		    				    				<td><?PHP if($data->employee_leave_requested_on=='0000-00-00'){echo '';}else echo $data->employee_leave_requested_on; ?></td>
 		    				    				<td>
 		    				    					<?PHP 
 			    				    				if($data->employee_current_status_from_dept_head == 0)
@@ -205,9 +196,10 @@
 		    									?>
 		    									<?php echo $countCompensatoryLeave; ?>
 		    									</td>
-										<tr/>
+										</tr>
 
-		    			    				<?php }
+		    			    				<?php 
+		    			    			}
 		    			    			}
 		    			    			?>
 
@@ -245,8 +237,9 @@
 	    	    				<table class="table table-hover table-bordered table-striped">
 	    	    				  
 	    	    				  <thead style="text-align: center;">
-	    	    				    <tr>
+	    	    				    <tr style="height: 70px;">
 	    	    				      <th scope="col">#</th>
+	    	    				      <th scope="col">-</th>
 	    	    				      <th scope="col" style="min-width: 150px;">Name</th>
 	    	    				      <th scope="col" style="min-width: 120px;">Department</th>
 	    	    				      <th scope="col" style="min-width: 120px;">Designation</th>
@@ -264,7 +257,7 @@
 	    	    				      <th scope="col" style="min-width: 150px;">Email</th>
 	    	    				      <th scope="col">Sick Leave Approved</th>
 	    	    				      <th scope="col">Annual Leave Approved</th>
-	    	    				      <th scope="col">Compensatory Leave Approved</th>
+	    	    				      <th scope="col">Comp. Leave Approved</th>
 	    	    				    </tr>
 	    	    				  </thead>
 	    	    				  <tbody>
@@ -275,7 +268,10 @@
 
 			    			    					
 			    			    			<tr> 
-			    			    					<td> <?PHP echo $key+1; ?> </td>
+			    			    					<td> <?PHP echo $key+1; ?> </td> <!-- $data->l_id1; -->
+			    			    					<td style="text-align: center;">
+				    	    				  		<img src='<?php echo $data->employee_profile_pic1; ?>' class="rounded-circle" alt="pic" style="width: 50px; height: 50px;">
+				    	    				  	</td>
 			    			    					<td><?PHP echo $data->employee_name1; ?></td>
 			    				    				<td>
 			    				    					<?PHP echo $data->employee_dept1; ?>
@@ -289,20 +285,50 @@
 			    				    				<td><?PHP echo $data->employee_desg1; ?></td>
 
 			    				    				<td><?PHP echo $data->employee_leave_type1; ?></td>
-			    				    				<td><?PHP echo $data->employee_leave_start1; ?></td>
-			    				    				<td><?PHP echo $data->employee_leave_end1; ?></td>
+			    				    				<td><?PHP if($data->employee_leave_start1=='0000-00-00'){echo '';}else echo $data->employee_leave_start1; ?></td>
+			    				    				<td><?PHP if($data->employee_leave_end1=='0000-00-00'){echo '';}else echo $data->employee_leave_end1; ?></td>
 			    				    				<td><?PHP echo $data->employee_leave_reason1; ?></td>
 			    				    				<td>
 			    				    					<?PHP 
 				    				    				if($data->employee_current_status_from_dept_head1 == 1)
 				    				    				{
-				    				    					echo "<button class = 'btn btn-success btn-sm' style = 'width:90px; margin-bottom:4px;'>Approved</button>";
+				    				    					/*echo "<button class = 'btn btn-success btn-sm' style = 'width:90px; margin-bottom:4px;'>Approved</button>";
+				    				    					echo "<button class = 'btn btn-secondary btn-sm' style = 'width:90px; margin-bottom:4px;'>Change</button>"; */
+				    				    				?>
+				    				    					<span><i class='fas fa-check' style='color: #50C476;'></i></span>&nbsp; &nbsp;
+				    				    					<span data-toggle='modal' data-target='#<?php echo $data->l_id1; ?>' data-whatever='@getbootstrap'><i class='fas fa-edit' style='color: #404087;'></i></span>
+				    				    				<?php
 				    				    				} 
 				    				    				?>
+
+
+				    				    	<!-- Modal -->
+											<div class="modal fade" id="<?php echo $data->l_id1; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+											  <div class="modal-dialog" role="document">
+											    <div class="modal-content">
+											      <div class="modal-header">
+											        <h5 class="modal-title" id="exampleModalLabel3">Change Leave Status</h5>
+											        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											          <span aria-hidden="true">&times;</span>
+											        </button>
+											      </div>
+											      <div class="modal-body">
+											       Current Status <span><i class='fas fa-check' style='color: #50C476;'></i></span>&nbsp; &nbsp;<?php echo $data->employee_name1; ?> (<?php echo $data->employee_desg1; ?>) &nbsp;&nbsp;-<?php echo $data->employee_leave_type1; ?> 
+											      </div>
+											      <div class="modal-footer">
+											      	<?php echo anchor("UserController/deptheaddenyapprovedreq/$data->l_id1",'Deny',['class'=>'btn btn-danger'])?>
+											      	<?php echo anchor("UserController/deptheadpendapprovedreq/$data->l_id1",'Pending',['class'=>'btn btn-dark'])?>
+											     
+											        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											      </div>
+											    </div>
+											  </div>
+											</div>
+
 			    				    					
 			    				    				</td>
-			    				    				<td><?PHP echo $data->employee_leave_requested_on1; ?></td>
-			    				    				<td><?PHP echo $data->employee_leave_approved_denied_on1; ?></td>
+			    				    				<td><?PHP if($data->employee_leave_requested_on1=='0000-00-00'){echo '';}else echo $data->employee_leave_requested_on1; ?></td>
+			    				    				<td><?PHP if($data->employee_leave_approved_denied_on1=='0000-00-00'){echo '';}else echo $data->employee_leave_approved_denied_on1; ?></td>
 			    				    				
 			    				    				
 
@@ -383,8 +409,9 @@
 	    	    				<table class="table table-hover table-bordered table-striped">
 	    	    				  
 	    	    				  <thead style="text-align: center;">
-	    	    				    <tr>
+	    	    				    <tr >
 	    	    				      <th scope="col">#</th>
+	    	    				      <th scope="col">-</th>
 	    	    				      <th scope="col" style="min-width: 150px;">Name</th>
 	    	    				      <th scope="col" style="min-width: 120px;">Department</th>
 	    	    				      <th scope="col" style="min-width: 120px;">Designation</th>
@@ -402,7 +429,7 @@
 	    	    				      <th scope="col" style="min-width: 150px;">Email</th>
 	    	    				      <th scope="col">Sick Leave Denied</th>
 	    	    				      <th scope="col">Annual Leave Denied</th>
-	    	    				      <th scope="col">Compensatory Leave Denied</th>
+	    	    				      <th scope="col">Comp. Leave Denied</th>
 	    	    				    </tr>
 	    	    				  </thead>
 	    	    				  <tbody>
@@ -412,8 +439,11 @@
 			    			    				{ ?>
 
 			    			    					
-			    			    			<tr> 
+			    			    			<tr style="height: 70px;"> 
 			    			    					<td> <?PHP echo $key+1; ?> </td>
+			    			    					<td style="text-align: center;">
+				    	    				  		<img src='<?php echo $data->employee_profile_pic2; ?>' class="rounded-circle" alt="pic" style="width: 50px; height: 50px;">
+				    	    				  	</td>
 			    			    					<td><?PHP echo $data->employee_name2; ?></td>
 			    				    				<td>
 			    				    					<?PHP echo $data->employee_dept2; ?>
@@ -427,20 +457,52 @@
 			    				    				<td><?PHP echo $data->employee_desg2; ?></td>
 
 			    				    				<td><?PHP echo $data->employee_leave_type2; ?></td>
-			    				    				<td><?PHP echo $data->employee_leave_start2; ?></td>
-			    				    				<td><?PHP echo $data->employee_leave_end2; ?></td>
+			    				    				<td><?PHP if($data->employee_leave_start2=='0000-00-00'){echo '';}else echo $data->employee_leave_start2; ?></td>
+			    				    				<td><?PHP if($data->employee_leave_end2=='0000-00-00'){echo '';}else echo $data->employee_leave_end2; ?></td>
 			    				    				<td><?PHP echo $data->employee_leave_reason2; ?></td>
 			    				    				<td>
 			    				    					<?PHP 
 				    				    				if($data->employee_current_status_from_dept_head2 == 2)
 				    				    				{
+				    				    					/*
 				    				    					echo "<button class = 'btn btn-danger btn-sm' style = 'width:90px; margin-bottom:4px;'>Denied</button>";
+				    				    					echo "<button class = 'btn btn-secondary btn-sm' style = 'width:90px; margin-bottom:4px;'>Change</button>";
+				    				    					*/
+				    				    					?>
+
+				    				    					<span><i class='fas fa-times' style='color: #CA4141;'></i></span>&nbsp; &nbsp;
+				    				    					<span data-toggle='modal' data-target='#<?php echo $data->l_id2; ?>' data-whatever='@getbootstrap'><i class='fas fa-edit' style='color: #404087;'></i></span>
+
+				    				    					<?php
 				    				    				} 
 				    				    				?>
+
+				    				    				<!-- Modal -->
+											<div class="modal fade" id="<?php echo $data->l_id2; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+											  <div class="modal-dialog" role="document">
+											    <div class="modal-content">
+											      <div class="modal-header">
+											        <h5 class="modal-title" id="exampleModalLabel3">Change Leave Status</h5>
+											        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											          <span aria-hidden="true">&times;</span>
+											        </button>
+											      </div>
+											      <div class="modal-body">
+											       Current Status <span><i class='fas fa-times' style='color: #CA4141;'></i></span>&nbsp; &nbsp;<?php echo $data->employee_name2; ?> (<?php echo $data->employee_desg2; ?>) &nbsp;&nbsp;-<?php echo $data->employee_leave_type2; ?> 
+											      </div>
+											      <div class="modal-footer">
+											      	<?php echo anchor("UserController/deptheadapprovedeniedreq/$data->l_id2",'Approve',['class'=>'btn btn-success'])?>
+											      	<?php echo anchor("UserController/deptheadpenddeniedreq/$data->l_id2",'Pending',['class'=>'btn btn-dark'])?>
+											      	
+											        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											      </div>
+											    </div>
+											  </div>
+											</div>
 			    				    					
 			    				    				</td>
-			    				    				<td><?PHP echo $data->employee_leave_requested_on2; ?></td>
-			    				    				<td><?PHP echo $data->employee_leave_approved_denied_on2; ?></td>
+			    				    				<td><?PHP if($data->employee_leave_requested_on2=='0000-00-00'){echo '';}else echo $data->employee_leave_requested_on2; ?></td>
+			    				    				<td><?PHP if($data->employee_leave_approved_denied_on2=='0000-00-00'){echo '';}else echo $data->employee_leave_approved_denied_on2; ?></td>
 			    				    				
 			    				    				
 

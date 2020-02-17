@@ -4,6 +4,7 @@
 	    		<ol class="breadcrumb">
 	    			<li class="breadcrumb-item breadcrumb-item active"><a href="#">Home</a></li>
 	    			    <li class="breadcrumb-item">Library</li>
+	    			    <li class="breadcrumb-item">Apply for Leave</li>
 	    		</ol>
 	    	</div>
 	    </section>
@@ -25,24 +26,11 @@
 
 	    				    <?php if($this->session->userdata('headsessionid'))
 	    				    { 
-	    				    	$s = $this->session->userdata('headsessiondeptid');
-	    				    	$array = array('employee.department_id' => $s, 'leaves.current_status_from_dept_head' => 0, 'employee.employee_role' => 0);
-
-	    				    	$query = $this->db->SELECT('leaves.id as l_id')
-	    				    						->from('leaves')
-	    				    						->join('employee', 'leaves.employee_id = employee.id')
-	    				    						->join('department','employee.department_id=department.id')
-	    				    						->where($array)
-	    				    						->order_by('l_id','DESC')
-	    				    						->get();			
-	    				    		if($query)
-	    				    		{
-	    				    			$var = $query->num_rows();
-	    				    		}
+	    				    	
 	    				    ?>	
 
 	    					<?php echo anchor('UserController/headApproveLeave', 
-	    				  '<span><i class="fas fa-clipboard-check"></i></span> Approve Leave  <span class="badge badge-secondary float-right m-1">'.$var.'</span>', 
+	    				  '<span><i class="fas fa-clipboard-check"></i></span> Approve Leave  <span class="badge badge-secondary float-right m-1">'.$leaveReqPendingCountBadge.'</span>', 
 	    				  ['class'=>'list-group-item list-group-item-action']); ?>
 
 	    					<?php
@@ -55,7 +43,7 @@
 
 
 	    				  <?php echo anchor('UserController/employeeViewEmployeeList', 
-	    				  '<span><i class="fas fa-list-alt"></i></span> Employee List <span class="badge badge-secondary float-right m-1">70</span>', 
+	    				  '<span><i class="fas fa-list-alt"></i></span> Employee List <span class="badge badge-secondary float-right m-1">'.$employeeCountBadge.'</span>', 
 	    				  ['class'=>'list-group-item list-group-item-action']); ?>
 
 	    				</div>
@@ -129,6 +117,50 @@
 								</script>
 
 									    				    <div class="card-body">
+
+									    				    <p>	Leaves Taken -
+
+									    				    <?php
+									    				    if($this->session->userdata('sessionid'))
+															{
+																$id = $this->session->userdata('sessionid');
+															}
+															if($this->session->userdata('headsessionid'))
+															{
+																$id = $this->session->userdata('headsessionid');
+															}
+									    				    ?>	
+									    				    <span style="color: red;">	Sick Leaves : </span> 
+								    				    	<?PHP 
+				    										$countSickLeave = $this->db->from('leaves')
+				    										->where('leave_type', 'Sick Leave')
+				    										->where('current_status_from_dept_head', 1)
+				    										->where('employee_id', $id)
+				    										->count_all_results();
+					    									
+					    									echo $countSickLeave; 
+					    									?>
+									    				    <span style="color: green;"> - Annual Leaves : </span> 
+								    				    	<?PHP 
+				    										$countAnnualLeave = $this->db->from('leaves')
+				    										->where('leave_type', 'Annual Leave')
+				    										->where('current_status_from_dept_head', 1)
+				    										->where('employee_id', $id)
+				    										->count_all_results();
+				    										echo $countAnnualLeave; 
+					    									?>
+									    				    <span style="color: blue;"> - Compansatory Leaves : </span> 
+
+								    				    	<?PHP 
+				    										$countCompensatoryLeave = $this->db->from('leaves')
+				    										->where('leave_type', 'Compensatory Leave')
+				    										->where('current_status_from_dept_head', 1)
+				    										->where('employee_id', $id)
+				    										->count_all_results();
+					    									echo $countCompensatoryLeave; 
+					    									?>
+									    				    </p>
+
 								    	    				 <div class="table-responsive">
 								    	    				<table class="table table-hover table-bordered table-striped">
 								    	    				  
@@ -151,12 +183,12 @@
     	    				  	    			    				{ ?>
 								    	    				  	<tr>
 								    	    				  	<td><?PHP echo $key+1; ?></td>
-								    	    				  	<td><?PHP echo $data->employee_leave_start5; ?></td>
-								    	    				  	<td><?PHP echo $data->employee_leave_end5; ?></td>
+								    	    				  	<td><?PHP if($data->employee_leave_start5=='0000-00-00'){echo '';}else echo $data->employee_leave_start5; ?></td>
+								    	    				  	<td><?PHP if($data->employee_leave_end5=='0000-00-00'){echo '';}else echo $data->employee_leave_end5; ?></td>
 								    	    				  	<td><?PHP echo $data->employee_leave_type5; ?></td>
 								    	    				  	<td><?PHP echo $data->employee_leave_reason5; ?></td>
-								    	    				  	<td><?PHP echo $data->employee_leave_requested_on5; ?></td>
-								    	    				  	<td><?PHP echo $data->employee_leave_approved_denied_on5; ?></td>
+								    	    				  	<td><?PHP if($data->employee_leave_requested_on5=='0000-00-00'){echo '';}else echo $data->employee_leave_requested_on5; ?></td>
+								    	    				  	<td><?PHP if($data->employee_leave_approved_denied_on5=='0000-00-00'){echo '';}else echo $data->employee_leave_approved_denied_on5; ?></td>
 
 								    	    				  	<td>
 								    	    				  	<?php 

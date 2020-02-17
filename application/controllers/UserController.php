@@ -6,31 +6,33 @@ class UserController extends MY_Controller {
 	public function index()
 	{
 		$this->load->view('Users/userLogin');
-		//$this->load->view('Users/test');
-
 	}
 
-	public function userRegistration()
+	public function maptest()
 	{
-		//$this->load->helper('url');
-		$this->load->view('Users/userRegistration');
+		$this->load->library('googlemaps');
+		$this->googlemaps->initialize();
+		$data['map'] = $this->googlemaps->create_map();
+		$this->load->view('Users/test', $data);
 	}
-
-	public function pageTest()
+	public function mapTestCont()
 	{
-		$this->load->view('Admin/adminAddDepartmentDesignation');
-	}
+		$start = $this->input->post('lat');
+		$end = $this->input->post('long');
 
-	public function userpagetest()
-	{
-		$this->load->view('Users/userHome');
+		echo $start;
+		echo $end;
+		echo "
+		<div style='width: 100%'><iframe width='60%' height='400' src='https://maps.google.com/maps?width=100%&amp;height=400&amp;hl=en&amp;coord=".$start.",".$end."&amp;q=saka%20international%20ltd+(saka)&amp;ie=UTF8&amp;t=&amp;z=18&amp;iwloc=B&amp;output=embed' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'><a href='https://www.maps.ie/map-my-route/'>sakaint</a></iframe></div><br />";
+		exit();
 	}
 	public function employeeHome()
 	{
 		$this->load->model('UserModel'); 
 		$noticetabledata=$this->UserModel->employeeViewNoticeTable();
-
-		$this->load->view('Employee/employeeHome',['noticetabledata'=>$noticetabledata]);
+		$employeeCountBadge=$this->UserModel->employeeCountBadge();
+		$leaveReqPendingCountBadge=$this->UserModel->leaveReqPendingCountBadge();
+		$this->load->view('Employee/employeeHome',['noticetabledata'=>$noticetabledata, 'employeeCountBadge' => $employeeCountBadge, 'leaveReqPendingCountBadge'=> $leaveReqPendingCountBadge]);
 	}
 	public function employeeApplyLeave()
 	{
@@ -45,7 +47,9 @@ class UserController extends MY_Controller {
 		$rowload = 10;
 		$this->load->model('UserModel'); 
 		$myLeaveData=$this->UserModel->myLeaveData($id, $rowload);
-		$this->load->view('Employee/employeeApplyLeave',['myLeaveData'=>$myLeaveData]);
+		$employeeCountBadge=$this->UserModel->employeeCountBadge();
+		$leaveReqPendingCountBadge=$this->UserModel->leaveReqPendingCountBadge();
+		$this->load->view('Employee/employeeApplyLeave',['myLeaveData'=>$myLeaveData, 'employeeCountBadge' => $employeeCountBadge, 'leaveReqPendingCountBadge'=> $leaveReqPendingCountBadge]);
 	}
 	public function employeeApplyLeavee($rowload)
 	{
@@ -59,7 +63,9 @@ class UserController extends MY_Controller {
 		}
 		$this->load->model('UserModel'); 
 		$myLeaveData=$this->UserModel->myLeaveData($id, $rowload);
-		$this->load->view('Employee/employeeApplyLeave',['myLeaveData'=>$myLeaveData]);
+		$employeeCountBadge=$this->UserModel->employeeCountBadge();
+		$leaveReqPendingCountBadge=$this->UserModel->leaveReqPendingCountBadge();
+		$this->load->view('Employee/employeeApplyLeave',['myLeaveData'=>$myLeaveData, 'employeeCountBadge' => $employeeCountBadge, 'leaveReqPendingCountBadge'=> $leaveReqPendingCountBadge]);
 	}
 
 	
@@ -75,19 +81,25 @@ class UserController extends MY_Controller {
 		}
 		$this->load->model('UserModel');
 		$singleProfileInfo = $this->UserModel->getSingleProfileInfo($id);
-		$this->load->view('Employee/employeeUpdateInfo',['singleProfileInfo'=>$singleProfileInfo]);		
+		$employeeCountBadge=$this->UserModel->employeeCountBadge();
+		$leaveReqPendingCountBadge=$this->UserModel->leaveReqPendingCountBadge();
+		$this->load->view('Employee/employeeUpdateInfo',['singleProfileInfo'=>$singleProfileInfo, 'employeeCountBadge' => $employeeCountBadge, 'leaveReqPendingCountBadge'=> $leaveReqPendingCountBadge]);		
 	}
 
 
 	public function employeeViewEmployeeList()
 	{
-		$this->load->view('Employee/employeeViewEmployeeList');
+		$this->load->model('UserModel');
+		$getAllEmployeeInfoData = $this->UserModel->getAllEmployeeInfo();
+		$employeeCountBadge=$this->UserModel->employeeCountBadge();
+		$leaveReqPendingCountBadge=$this->UserModel->leaveReqPendingCountBadge();
+		$this->load->view('Employee/employeeViewEmployeeList',['getAllEmployeeInfoData'=>$getAllEmployeeInfoData, 'employeeCountBadge' => $employeeCountBadge, 'leaveReqPendingCountBadge'=> $leaveReqPendingCountBadge]);
 	}
 
 	public function employeeAppliedForLeave()
 	{
-		$this->form_validation->set_rules('leavefrom', 'Leave Start Date', 'required');
-		$this->form_validation->set_rules('leaveto', 'Leave End Date', 'required');
+		$this->form_validation->set_rules('leavefrom', 'Leave Start Date', 'required|differs[0000-00-00]');
+		$this->form_validation->set_rules('leaveto', 'Leave End Date', 'required|differs[0000-00-00]');
 		$this->form_validation->set_rules('leavereason', 'Leave Reason', 'required');
 		$this->form_validation->set_rules('leavetype', 'Leave Type', 'required');
 
@@ -110,22 +122,22 @@ class UserController extends MY_Controller {
 			$this->load->model('UserModel');
 			$query = $this->UserModel->applyLeaveQuery($id,$start,$end,$reason,$type);
 
-			if($query)
+			if($query==true)
 			{
 				$this->session->set_flashdata('msg','Successfully Applied for leave!');
-				return redirect('UserController/employeeHome');
+				return redirect('UserController/employeeApplyLeave');
 			}
 			else
 			{
-				$this->session->set_flashdata('msgg','Faled to apply for leave!');
-				return redirect('UserController/employeeHome');
+				$this->session->set_flashdata('msgg','Failed to apply for leave!');
+				return redirect('UserController/employeeApplyLeave');
 			}
 
 		}
 		else
 		{
 				$this->session->set_flashdata('msgg','Failed ! All fields must be filled!');
-				return redirect('UserController/employeeHome');
+				return redirect('UserController/employeeApplyLeave');
 		}
 	}
 
@@ -205,7 +217,9 @@ class UserController extends MY_Controller {
 		}
 		$this->load->model('UserModel');
 		$singleProfileInfo = $this->UserModel->getSingleProfileInfo($id);
-		$this->load->view('Employee/employeeUpdateAddUpdateinfo',['singleProfileInfo'=>$singleProfileInfo]);
+		$employeeCountBadge=$this->UserModel->employeeCountBadge();
+		$leaveReqPendingCountBadge=$this->UserModel->leaveReqPendingCountBadge();
+		$this->load->view('Employee/employeeUpdateAddUpdateinfo',['singleProfileInfo'=>$singleProfileInfo, 'employeeCountBadge' => $employeeCountBadge, 'leaveReqPendingCountBadge'=> $leaveReqPendingCountBadge]);
 	}
 
 	public function employeeChangePassword()
@@ -220,7 +234,9 @@ class UserController extends MY_Controller {
 			}
 		$this->load->model('UserModel');
 		$singleProfileInfo = $this->UserModel->getSingleProfileInfo($id);
-		$this->load->view('Employee/employeeHomeChangePassword',['singleProfileInfo'=>$singleProfileInfo]);
+		$employeeCountBadge=$this->UserModel->employeeCountBadge();
+		$leaveReqPendingCountBadge=$this->UserModel->leaveReqPendingCountBadge();
+		$this->load->view('Employee/employeeHomeChangePassword',['singleProfileInfo'=>$singleProfileInfo, 'employeeCountBadge' => $employeeCountBadge, 'leaveReqPendingCountBadge'=> $leaveReqPendingCountBadge]);
 	}
 
 
@@ -288,7 +304,7 @@ class UserController extends MY_Controller {
 	{
 		$this->form_validation->set_rules('oldpass','Old Password','trim|required');
 		$this->form_validation->set_rules('newpass','New Password','trim|required|min_length[4]|max_length[20]');
-		$this->form_validation->set_rules('confpass','Confirm Password','trim|required|min_length[4]|max_length[20]');
+		$this->form_validation->set_rules('confpass','Confirm Password','trim|required|min_length[4]|max_length[20]|matches[newpass]');
 
 		if($this->form_validation->run())
 		{
@@ -355,7 +371,9 @@ class UserController extends MY_Controller {
 		$leaveReqData = $this->UserModel->headViewAllLeaveRequest($id,$rowload);
 		$approveReqData = $this->UserModel->headViewAllApprovedRequest($id,$rowload);
 		$denyReqData = $this->UserModel->headViewAllDeniedRequest($id,$rowload);
-		$this->load->view('Employee/deptHeadApproveLeave',['leaveReqData'=>$leaveReqData, 'approveReqData'=>$approveReqData, 'denyReqData' => $denyReqData]);
+		$employeeCountBadge = $this->UserModel->employeeCountBadge();
+		$leaveReqPendingCountBadge = $this->UserModel->leaveReqPendingCountBadge();
+		$this->load->view('Employee/deptHeadApproveLeave',['leaveReqData'=>$leaveReqData, 'approveReqData'=>$approveReqData, 'denyReqData' => $denyReqData, 'employeeCountBadge' => $employeeCountBadge, 'leaveReqPendingCountBadge'=> $leaveReqPendingCountBadge]);
 		
 	}
 	public function headApproveLeavee($rowload)
@@ -365,13 +383,14 @@ class UserController extends MY_Controller {
 		$leaveReqData = $this->UserModel->headViewAllLeaveRequest($id,$rowload);
 		$approveReqData = $this->UserModel->headViewAllApprovedRequest($id,$rowload);
 		$denyReqData = $this->UserModel->headViewAllDeniedRequest($id,$rowload);
-		$this->load->view('Employee/deptHeadApproveLeave',['leaveReqData'=>$leaveReqData, 'approveReqData'=>$approveReqData, 'denyReqData' => $denyReqData]);
+		$employeeCountBadge = $this->UserModel->employeeCountBadge();
+		$leaveReqPendingCountBadge = $this->UserModel->leaveReqPendingCountBadge();
+		$this->load->view('Employee/deptHeadApproveLeave',['leaveReqData'=>$leaveReqData, 'approveReqData'=>$approveReqData, 'denyReqData' => $denyReqData, 'employeeCountBadge' => $employeeCountBadge, 'leaveReqPendingCountBadge'=> $leaveReqPendingCountBadge]);
 	}
 	public function headApprovedLeave($id)
     {
     //	$leave_id =  $this->uri->segment(3);
   	//	$current_status =  $this->uri->segment(4);
-
   		$this->load->model('UserModel');
 		$queryResult = $this->UserModel->headApprovedLeave($id);
 
@@ -401,6 +420,75 @@ class UserController extends MY_Controller {
     				$this->session->set_flashdata('msg','Ooops, something went wrong!');
     				return redirect('UserController/headApproveLeave');
     			}
+    }
+
+    public function deptheaddenyapprovedreq($l_id1)
+    {
+    	$this->load->model('UserModel');
+		$query = $this->UserModel->deptheaddenyapprovedreq($l_id1);
+
+		if($query == true)
+		{
+			$this->session->set_flashdata('msg','Successfully changed!');
+			return redirect('UserController/headApproveLeave');
+		}
+		else
+		{
+			return redirect('UserController/headApproveLeave');
+		}
+
+
+    }
+    public function deptheadpendapprovedreq($l_id1)
+    {
+    	$this->load->model('UserModel');
+		$query = $this->UserModel->deptheadpendapprovedreq($l_id1);
+
+		if($query == true)
+		{
+			$this->session->set_flashdata('msg','Successfully changed!');
+			return redirect('UserController/headApproveLeave');
+		}
+		else
+		{
+			return redirect('UserController/headApproveLeave');
+		}
+
+
+    }
+    public function deptheadapprovedeniedreq($l_id2)
+    {
+    	$this->load->model('UserModel');
+		$query = $this->UserModel->deptheadapprovedeniedreq($l_id2);
+
+		if($query == true)
+		{
+			$this->session->set_flashdata('msg','Successfully changed!');
+			return redirect('UserController/headApproveLeave');
+		}
+		else
+		{
+			return redirect('UserController/headApproveLeave');
+		}
+
+
+    }
+    public function deptheadpenddeniedreq($l_id2)
+    {
+    	$this->load->model('UserModel');
+		$query = $this->UserModel->deptheadpenddeniedreq($l_id2);
+
+		if($query == true)
+		{
+			$this->session->set_flashdata('msg','Successfully changed!');
+			return redirect('UserController/headApproveLeave');
+		}
+		else
+		{
+			return redirect('UserController/headApproveLeave');
+		}
+
+
     }
 
 }

@@ -28,24 +28,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	    				     <?php if($this->session->userdata('headsessionid'))
 	    				    { 
-	    				    	$s = $this->session->userdata('headsessiondeptid');
-	    				    	$array = array('employee.department_id' => $s, 'leaves.current_status_from_dept_head' => 0, 'employee.employee_role' => 0);
-
-	    				    	$query = $this->db->SELECT('leaves.id as l_id')
-	    				    						->from('leaves')
-	    				    						->join('employee', 'leaves.employee_id = employee.id')
-	    				    						->join('department','employee.department_id=department.id')
-	    				    						->where($array)
-	    				    						->order_by('l_id','DESC')
-	    				    						->get();			
-	    				    		if($query)
-	    				    		{
-	    				    			$var = $query->num_rows();
-	    				    		}
+	    				    	
 	    				    ?>	
 
 	    					<?php echo anchor('UserController/headApproveLeave', 
-	    				  '<span><i class="fas fa-clipboard-check"></i></span> Approve Leave  <span class="badge badge-secondary float-right m-1">'.$var.'</span>', 
+	    				  '<span><i class="fas fa-clipboard-check"></i></span> Approve Leave  <span class="badge badge-secondary float-right m-1">'.$leaveReqPendingCountBadge.'</span>', 
 	    				  ['class'=>'list-group-item list-group-item-action']); ?>
 
 	    					<?php
@@ -59,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 	    				  <?php echo anchor('UserController/employeeViewEmployeeList', 
-	    				  '<span><i class="fas fa-list-alt"></i></span> Employee List <span class="badge badge-secondary float-right m-1">70</span>', 
+	    				  '<span><i class="fas fa-list-alt"></i></span> Employee List <span class="badge badge-secondary float-right m-1">'.$employeeCountBadge.'</span>', 
 	    				  ['class'=>'list-group-item list-group-item-action']); ?>
 
 	    				</div>
@@ -80,7 +67,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	    				<div class="card">
 	    				  
-	    				    <h5 class="card-header main-color-bg">Admin Posts:</h5>
+	    				    <h5 class="card-header main-color-bg"> Admin Posts</h5>
 
 	    				    <div class="card-body">
 	    				    	<div class="row" style="text-align: center;">

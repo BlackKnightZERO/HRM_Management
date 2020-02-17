@@ -375,6 +375,152 @@ class UserModel extends CI_Model
     			return false;
     		}
     }
+
+    public function deptheaddenyapprovedreq($l_id1)
+    {
+        $data = array(
+                'current_status_from_dept_head' => 2 ,
+                'leave_approved_denied_on' => date("Y-m-d"),
+                );
+
+                $query = $this->db->WHERE('id',$l_id1)
+                                  ->update('leaves', $data);
+
+                  if($query)
+                  {
+                    return true;
+                  }
+                  else
+                  {
+                    return false;
+                  }
+    }
+
+
+    public function deptheadpendapprovedreq($l_id1)
+    {
+        $data = array(
+                'current_status_from_dept_head' => 0 ,
+                'leave_approved_denied_on' => date("Y-m-d"),
+                );
+
+                $query = $this->db->WHERE('id',$l_id1)
+                                  ->update('leaves', $data);
+
+                  if($query)
+                  {
+                    return true;
+                  }
+                  else
+                  {
+                    return false;
+                  }
+    }
+        public function deptheadapprovedeniedreq($l_id2)
+            {
+                $data = array(
+                        'current_status_from_dept_head' => 1 ,
+                        'leave_approved_denied_on' => date("Y-m-d"),
+                        );
+
+            $query = $this->db->WHERE('id',$l_id2)
+                              ->update('leaves', $data);
+
+                              if($query)
+                              {
+                                return true;
+                              }
+                              else
+                              {
+                                return false;
+                              }
+    }
+    public function deptheadpenddeniedreq($l_id2)
+    {
+        $data = array(
+                'current_status_from_dept_head' => 0 ,
+                'leave_approved_denied_on' => date("Y-m-d"),
+                );
+
+            $query = $this->db->WHERE('id',$l_id2)
+                              ->update('leaves', $data);
+
+                              if($query)
+                              {
+                                return true;
+                              }
+                              else
+                              {
+                                return false;
+                              }
+    }
+ public function getAllEmployeeInfo()
+    {
+
+             $query = $this->db->SELECT('employee.id as employee_id,
+            employee.name as employee_name, 
+            department.department_name as employee_dept,
+            designation.designation_name as employee_desg, 
+            employee.official_email_1 as employee_mail_1, 
+            employee.employee_role as employee_role, 
+            employee.blood_group as employee_blood_grp, 
+            employee.join_date as employee_join_date, 
+            employee.date_of_birth as employee_date_of_birth,
+            employee.official_mobile_no as employee_official_mobile_no,
+            employee.dept_head as employee_dept_head_sts,
+            employee.profile_pic_path as employee_profile_pic,
+            employee.personal_mobile_no as employee_personal_mobile_no,
+            employee.official_email_2 as employee_official_email_2')
+                            ->from('employee')
+                            ->join('department','employee.department_id=department.id')
+                            ->join('designation', 'employee.designation_id = designation.id')
+                            ->order_by('employee_id','ASC')
+                            ->get();
+
+
+              if($query->num_rows()>0)
+              {
+                return $query->result();
+              }
+              else
+              {
+                return false;
+              }
+    }
+
+    public function employeeCountBadge()
+    {
+            $employeeCountBadge = $this->db->from('employee')
+                                        ->count_all_results();
+
+            if($employeeCountBadge)    
+            {
+                return $employeeCountBadge;
+            }                        
+    }
+
+     public function leaveReqPendingCountBadge()
+    {
+        $s = $this->session->userdata('headsessiondeptid');
+        $array = array('employee.department_id' => $s, 'leaves.current_status_from_dept_head' => 0, 'employee.employee_role' => 0);
+
+        $query = $this->db->SELECT('leaves.id as l_id')
+                            ->from('leaves')
+                            ->join('employee', 'leaves.employee_id = employee.id')
+                            ->join('department','employee.department_id=department.id')
+                            ->where($array)
+                            ->order_by('l_id','DESC')
+                            ->get();            
+            if($query)
+            {
+                $leaveReqPendingCountBadge = $query->num_rows();
+                return $leaveReqPendingCountBadge;
+            }
+                  
+    }
+    
+
+
 }
 
 /*

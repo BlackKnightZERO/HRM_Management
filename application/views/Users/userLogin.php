@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bootstrap Simple Login Form</title>
+<title>Saka Login Form</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -38,11 +38,15 @@
         <h1 style="margin-top: 50px;"><i class="fas fa-address-book"></i></h1>
         <h2> Login Panel </h2>
         <?php if($msg = $this->session->flashdata('msg')): ?>
+            <?php echo "<div style='color:red'>"; ?>
             <?php echo $msg; ?>
+            <?php echo "</div>"; ?>
           <?php endif; ?>
+          <div id='forgpass' style="color:red"></div>
     </div>
     
 <div class="login-form">
+
     <?php echo form_open('loginController/userLogin'); ?>
             
         <div class="form-group">
@@ -63,7 +67,15 @@
             
            <!-- <button class="btn btn-primary" style='margin: 10px 0 0 50px;''>Clear</button> -->
             <?php echo anchor('UserController/index', 'Clear', ['class'=>'btn btn-primary', 'style'=>'margin: 10px 0 0 50px;']); ?>
-            <section style="margin: 20px 0 0 54px;"><a href="#">Forgot your password?</a></section>
+           
+            <section style="margin: 20px 0 0 54px;"><a href="#" onclick="fun();">Forgot your password?</a></section>
+
+            <script type="text/javascript">
+                function fun()
+                {
+                    document.getElementById('forgpass').innerHTML = 'Please contact Admin !'
+                }
+            </script>
 
                
     <?php echo form_close(); ?>

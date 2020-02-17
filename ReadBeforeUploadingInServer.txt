@@ -1,0 +1,30 @@
+1. Rename the Root Folder[CI_HRM] to any desired single string name. ex: SAKALEAVE or SakaLeave or Leave or HRM
+
+2. edit the base_url of the system by going : 
+   CI_HRM/application/config/config.php in line 26:$config['base_url'] = '';
+
+3. upload database(sql file) to mysql server with any desired name
+
+4. edit the database connection information by going :
+   CI_HRM/application/config/database.php line :76-95;
+        'dsn'	=> '',
+	'hostname' => 'companyServerHostName', //edit these
+	'username' => 'dataBaseUserName',      //edit these
+	'password' => 'dataBasePassword',      //edit these
+	'database' => 'createdDatabaseName',   //edit these
+        
+        
+5. for more information and clearifications : 
+    follow any tutorials on youtube with search keyword : 
+    how to upload codeignighter project to live server
+
+6. after uploading to open the management system fo to url    and type base_url/folderName 
+   ex: sakaint.com/leave
+   after above steps are successfully done a log in page    should appear.
+
+7. admin login: 
+	email: it@sakaint.com
+	password: 1234
+
+7. feel free to contact upon any information. 
+   mail: ayon.arif.10@gmail.com	

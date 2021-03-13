@@ -598,6 +598,16 @@ class AdminModel extends CI_Model
 								  }
 	}
 
-
+	public function attendanceToday(){
+		$date = date("Y-m-d", time() + 4.5 * 60 * 60);
+		$query = $this->db->select('attendances.id as a_id, attendances.employee_id as a_e_id, employee.name,
+			department.department_name')
+							->from('attendances')
+                            ->join('employee', 'attendances.employee_id = employee.id')
+                            ->join('department','employee.department_id=department.id')
+    						->where(['date'=>$date])
+							->get();
+							return $query->result();								
+	}
 }
 ?>

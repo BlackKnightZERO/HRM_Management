@@ -12,8 +12,8 @@ class AdminController extends CI_Controller
 		$onLeaveTodaydata=$this->AdminModel->onLeaveTodaydata();
 		$employeeCountBadge=$this->AdminModel->employeeCountBadge();
 		$leaveReqPendingCountBadge=$this->AdminModel->leaveReqPendingCountBadge();
-
-		$this->load->view('Admin/adminHome',['noticetabledata'=>$noticetabledata, 'birthdayTodaydata'=>$birthdayTodaydata, 'onLeaveTodaydata' => $onLeaveTodaydata,'employeeCountBadge'=>$employeeCountBadge ,'leaveReqPendingCountBadge'=>$leaveReqPendingCountBadge]);
+		$attendances=$this->AdminModel->attendanceToday();
+		$this->load->view('Admin/adminHome',['noticetabledata'=>$noticetabledata, 'birthdayTodaydata'=>$birthdayTodaydata, 'onLeaveTodaydata' => $onLeaveTodaydata,'employeeCountBadge'=>$employeeCountBadge ,'leaveReqPendingCountBadge'=>$leaveReqPendingCountBadge, 'attendances'=>$attendances]);
 	}
 
 	public function adminUpdateInfo()

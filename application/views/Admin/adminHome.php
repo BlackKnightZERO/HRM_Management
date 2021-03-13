@@ -168,7 +168,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	    				    			<div class="card card-body bg-light" style="height: 150px;">
 	    				    				
 	    				    				<?php 
-	    				    				$countLeaveData=0;
+											$countLeaveData=0;
+											
 	    				    				foreach ($onLeaveTodaydata as $key => $value) 
 	    				    				{
 	    				    					$countLeaveData++;
@@ -243,15 +244,57 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							 </div>
 							 <!--MODAL -->
 
+							 		<?php 
+									$countAttData=0;
+									if(count($attendances)>0){
 
+									
+				    				foreach($attendances as $key => $value) 
+				    				{
+				    					$countAttData++;
+
+				    				}
+								}
+				    				?>
 
 	    				    		<div class="col-lg-3 col-md-3 col-sm-12 col-12">
 	    				    			<div class="card card-body bg-light" style="height: 150px;">
-												<a href="#" style="text-decoration: none; color: #333333; margin-top: 8px;">
-	    				    			     <h2><span><i class="fas fa-chart-line"></i></span>12</h2>
+												<a href="" data-toggle="modal" data-target="#attendaceModal" style="text-decoration: none; color: #333333; margin-top: 8px;">
+	    				    			     <h2><span><i class="fas fa-chart-line"></i></span><?php echo $countAttData;?></h2>
 	    				    			     <h5>Attendance</a></h5>
 	    				    			</div>
 	    				    		</div>
+
+	    				    		<!--MODAL -->
+							 <div class="modal fade" id="attendaceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel7" aria-hidden="true">
+							   <div class="modal-dialog" role="document">
+							     <div class="modal-content">
+							       <div class="modal-header">
+							         <h5 class="modal-title" id="exampleModalLabel7" style="color: #6d7da5;">Today's Attendance <span><i class="fas fa-sign-out-alt"></i></span></h5>
+							         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							           <span aria-hidden="true">&times;</span>
+							         </button>
+							       </div>
+							       <div class="modal-body">
+							       	<div class="media-body">
+									 <?php 
+									 if(count($attendances)>0){
+							         foreach ($attendances as $key => $value) { ?>
+							         
+							         <h5 style="text-align: left;"><?php echo $key+1 .'. '. $value->name .' - dept : '. $value->department_name ?></h5>
+							         <?php	
+							         }}
+							         ?>
+							       </div>
+							   </div>
+							       <div class="modal-footer">
+							         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							       </div>
+							     </div>
+							   </div>
+							 </div>
+
+
 	    				    		<div class="col-lg-3 col-md-3 col-sm-12 col-12">
 	    				    			<div class="card card-body bg-light" style="height: 150px;">
 	    				    				<a href="#" style="text-decoration: none; color: #333333; margin-top: 8px;">

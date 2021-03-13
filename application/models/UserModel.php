@@ -518,8 +518,171 @@ class UserModel extends CI_Model
             }
                   
     }
-    
 
+    public function attendaceTodayCheck($employee_id){
+        $date = date("Y-m-d", time() + 4.5 * 60 * 60);
+        $data = array(
+            'date' => $date,
+            'employee_id' => $employee_id
+        );
+        $query = $this->db->SELECT('attendances.id as attendace_id, 
+                                    attendances.clock_in as clock_in, 
+                                    attendances.clock_out as clock_out, 
+                                    attendances.date as date')
+                            ->from('attendances')
+                            ->where($data)
+                            ->order_by('id', 'DESC')
+                            ->limit('1')
+                            ->get();
+
+        if($query->num_rows()>0){
+            return $query->result();
+        } else {
+            return false;
+        }                   
+    }
+
+    public function attendaceTodayCheck2($employee_id){
+        $date = date("Y-m-d", time() + 4.5 * 60 * 60);
+        $data = array(
+            'date' => $date,
+            'employee_id' => $employee_id
+        );
+        $query = $this->db->SELECT('attendances.id as attendace_id, 
+                                    attendances.clock_in as clock_in, 
+                                    attendances.clock_out as clock_out, 
+                                    attendances.date as date')
+                            ->from('attendances')
+                            ->where($data)
+                            ->order_by('id', 'DESC')
+                            ->limit('1')
+                            ->get();
+
+        return $query->result();                  
+    }
+
+
+	public function attendanceIn($employee_id){
+
+		$current_time = date("h:i a", time() + 4.5 * 60 * 60);
+		$begin = "10:00 am";
+		$end   = "10:30 am";
+
+		$date1 = DateTime::createFromFormat('H:i a', $current_time);
+		$date2 = DateTime::createFromFormat('H:i a', $begin);
+		$date3 = DateTime::createFromFormat('H:i a', $end);
+
+		$var = 0;
+		if ($date1 > $date2 && $date1 < $date3) {
+			$var = 1;
+		} else {
+			$var = 2;
+		}
+		
+		$data = array(
+            'employee_id' => $employee_id,
+            'date' =>  date("Y-m-d", time() + 4.5 * 60 * 60),
+			'clock_in' => date("H:i:s", time() + 4.5 * 60 * 60),
+			'status' => $var,
+		);
+		$query = $this->db->insert('attendances', $data);
+		if($query){
+			return $query;
+		} else {
+			return false;
+		}
+	}
+
+    public function attendanceOut($employee_id){
+        //generate timestamp
+        $data = array(
+            'employee_id' => $employee_id,
+            'date' =>  date("Y-m-d", time() + 4.5 * 60 * 60),
+        );
+
+        $query = $this->db->SELECT('attendances.id as attendace_id, 
+                                    attendances.clock_in as clock_in, 
+                                    attendances.clock_out as clock_out, 
+                                    attendances.date as date')
+                            ->from('attendances')
+                            ->where($data)
+                            ->order_by('attendace_id', 'DESC')
+                            ->limit('1')
+                            ->get();
+
+        if($query->num_rows()>0){
+            $result = $query->result();
+            if($result[0]->clock_out == null){
+                $whereData = array(
+                    'clock_out' => date("H:i:s", time() + 4.5 * 60 * 60),
+                );
+
+                $query = $this->db->WHERE('id', $result[0]->attendace_id)
+                                  ->update('attendances', $whereData);
+
+                if($query){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }                   
+        
+    }
+	
+	public function employeeAttendanceToday($employee_id){
+		$array = array(
+	       'employee_id' => $employee_id,
+           'date' => date("Y-m-d", time() + 4.5 * 60 * 60),
+		);
+		$query = $this->db->SELECT('attendaces.id as attendace_id',
+                                    'attendaces.clock_in as clock_in', 
+                                    'attendaces.clock_out as clock_out')
+                            ->from('attendaces')
+                            ->join('employee', 'attendaces.employee_id = employee.id')
+                            ->join('department','employee.department_id=department.id')
+                            ->where($array)
+                            ->order_by('attendace_id','DESC')
+                            ->get();            
+            if($query)
+            {
+                return $query->result();
+            }
+	}
+
+	public function employeeAttendanceData($employee_id){
+	$array = array(
+           'employee_id' => $employee_id,
+        );
+	$query = $this->db->SELECT('attendances.id as attendance_id, 
+                                attendances.clock_in as clock_in,
+                                attendances.clock_out as clock_out,
+                                attendances.date as date')
+                            ->from('attendances')
+                            ->where($array)
+                            ->order_by('attendance_id','DESC')
+                            ->limit('30')
+                            ->get();            
+            if($query)
+            {
+                return $query->result();
+            } else {
+                return false;
+            }
+	}
+
+    public function allEmployeeAttendanceData(){
+        $query = $this->db->SELECT('attendances.id as attendance_id, 
+                                attendances.clock_in as clock_in,
+                                attendances.clock_out as clock_out,
+                                attendances.status as status,
+                                attendances.date as date, employee.name')
+                            ->from('attendances')
+                            ->join('employee', 'attendances.employee_id = employee.id')
+                            ->order_by('attendance_id','DESC')
+                            ->get();  
+        return $query->result();                    
+    }
 
 }
 

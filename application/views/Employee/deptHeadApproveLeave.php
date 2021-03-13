@@ -24,10 +24,18 @@
 	    				    <?php echo anchor('UserController/employeeUpdateInfo','<span><i class="fas fa-pen-nib"></i></span>
 	    				    Update Info', ['class'=>'list-group-item list-group-item-action']); ?>
 
+	    				    <?php 
+	    				    echo anchor('UserController/attendanceToday', '<span><i class="far fa-clock"></i></span>
+	    				    Attendance', ['class'=>'list-group-item list-group-item-action']);
+	    				    ?>
+
 	    				    <?php if($this->session->userdata('headsessionid'))
 	    				    { 
 	    				    ?>	
-
+	    				    <?php 
+	    				    echo anchor('UserController/attendanceReport', '<span><i class="fas fa-list-alt"></i></span>
+	    				    Attendance Report', ['class'=>'list-group-item list-group-item-action']);
+	    				    ?>
 	    					<?php echo anchor('UserController/headApproveLeave', 
 	    				  '<span><i class="fas fa-clipboard-check"></i></span> Approve Leave  <span class="badge badge-secondary float-right m-1">'.$leaveReqPendingCountBadge.'</span>', 
 	    				  ['class'=>'list-group-item list-group-item-action active main-color-bg']); ?>

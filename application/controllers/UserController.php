@@ -491,5 +491,96 @@ class UserController extends MY_Controller {
 
     }
 
+    public function attendanceToday(){
+		$this->load->model('UserModel');
+		$this->load->model('UserModel');
+		if($this->session->userdata('headsessionid')){
+			$employee_id = $this->session->userdata('headsessionid');
+		} else if ($this->session->userdata('sessionid')){
+			$employee_id = $this->session->userdata('sessionid');
+		} else {
+
+		}
+		$attendaceTodayCheck=$this->UserModel->attendaceTodayCheck($employee_id);
+		$attendaceTodayCheck2=$this->UserModel->attendaceTodayCheck2($employee_id);
+
+		if(!$attendaceTodayCheck){
+			$status = 1;
+		} else {
+			// var_dump($attendaceTodayCheck);
+			if ($attendaceTodayCheck[0]->clock_in != null && $attendaceTodayCheck[0]->clock_out == null){
+				$status = 2;
+			} else {
+				$status = 3;
+			}
+		}
+		$noticetabledata=$this->UserModel->employeeViewNoticeTable();
+		$employeeCountBadge=$this->UserModel->employeeCountBadge();
+		$leaveReqPendingCountBadge=$this->UserModel->leaveReqPendingCountBadge();
+		$tableDatas=$this->UserModel->employeeAttendanceData($employee_id);
+		$this->load->view('Employee/attendance',
+			[
+				'noticetabledata'=>$noticetabledata, 
+				'employeeCountBadge' => $employeeCountBadge, 
+				'leaveReqPendingCountBadge'=> $leaveReqPendingCountBadge,
+				'attendanceStatus' => $status,
+				'attendances' => $tableDatas,
+				'clock_in_out' => $attendaceTodayCheck2
+			]
+		);
+	}
+
+	public function clockIn(){
+		$this->load->model('UserModel');
+		if($this->session->userdata('headsessionid')){
+			$employee_id = $this->session->userdata('headsessionid');
+		} else if ($this->session->userdata('sessionid')){
+			$employee_id = $this->session->userdata('sessionid');
+		} else {
+
+		}
+		$clockIn = $this->UserModel->attendanceIn($employee_id);
+
+		if($clockIn){
+			$this->attendanceToday();
+		} else {
+			echo 'something went wrong!';
+			exit();
+		}
+	}
+
+	public function clockOut(){
+		$this->load->model('UserModel');
+		if($this->session->userdata('headsessionid')){
+			$employee_id = $this->session->userdata('headsessionid');
+		} else if ($this->session->userdata('sessionid')){
+			$employee_id = $this->session->userdata('sessionid');
+		} else {
+
+		}
+		$clockOut = $this->UserModel->attendanceOut($employee_id);
+		if($clockOut){
+			$this->attendanceToday();
+		} else {
+			echo 'something went wrong!';
+			exit();
+		}
+	}
+
+	public function attendanceReport(){
+		$this->load->model('UserModel');
+		$noticetabledata=$this->UserModel->employeeViewNoticeTable();
+		$employeeCountBadge=$this->UserModel->employeeCountBadge();
+		$leaveReqPendingCountBadge=$this->UserModel->leaveReqPendingCountBadge();
+		$tableDatas=$this->UserModel->allEmployeeAttendanceData();
+		$this->load->view('Employee/attendanceReport',
+			[
+				'noticetabledata'=>$noticetabledata, 
+				'employeeCountBadge' => $employeeCountBadge, 
+				'leaveReqPendingCountBadge'=> $leaveReqPendingCountBadge,
+				'attendances' => $tableDatas,
+			]
+		);
+	}
 }
 ?>
